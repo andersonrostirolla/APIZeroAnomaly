@@ -8,23 +8,23 @@ using System.Net.Http;
 using System.Web.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using APIZeroAnomaly.Classes;
+using System.IO;
 
 namespace APIZeroAnomaly.Controllers
 {
     public class DadosSensoresController : ApiController
     {
-        //DBCon dbmongo = new DBCon();
+        private DBCon dbmongo = new DBCon();
 
-        public List<DadosSensor> Get()
+        //get 1 sensor
+        public List<DadosSensor> Get(string idSensor)
         {
-            var dbmongo = new MongoClient();
-            var db = dbmongo.GetDatabase("dadosSensor");
-            var coll = db.GetCollection<DadosSensor>("dadosSensor");
+            dbmongo.criarConexaoDB();
 
-            //var id = new ObjectId("59cada0dbf98224ccd040111");
-            var id = "1";
+            var id = idSensor;
 
-            var sensores = coll
+            var sensores = dbmongo.getColuna()
                 .Find(b => b.idSensor == id)
                 .SortBy(b => b.idSensor)
                 .Limit(5)
@@ -34,36 +34,83 @@ namespace APIZeroAnomaly.Controllers
             return sensores;
         }
 
-        public void Post(string idSensor, string valor)
+        //get All
+        /*public List<DadosSensor> listarAll()
         {
-            var dbmongo = new MongoClient();
-            var db = dbmongo.GetDatabase("dadosSensor");
-            var coll = db.GetCollection<DadosSensor>("dadosSensor");
+            dbmongo.criarConexaoDB();
 
-            if ((!string.IsNullOrEmpty(idSensor)) && (!string.IsNullOrEmpty(valor)))
+            var sensores = dbmongo.getColuna().Find(Builders<DadosSensor>.Filter.Empty).ToList();
+
+            return sensores;
+        }*/
+
+        public void tratarAnomalia(int vizinhos, double min, double max, string idSensor)
+        {
+            List<Double> listDados = new List<Double>();
+            Algoritmo alg = new Algoritmo();
+            List<String> classificacao = new List<String>(); 
+            
+            var id = idSensor;
+
+            dbmongo.criarConexaoDB();
+
+            var sensores = dbmongo.getColuna()
+                .Find(b => b.idSensor == id)
+                .SortBy(b => b.idSensor)
+                .Limit(5)
+                .ToListAsync()
+                .Result;
+
+            for (int i = 0; i < sensores.Count; i++)
+            {
+                listDados.Add(Convert.ToDouble(sensores[i].valor));
+                alg.setClassificacao(Convert.ToDouble(sensores[i].valor), min, max);
+                classificacao.Add(alg.getClassificacao());
+            }
+
+            alg.trataAnomalia(listDados,vizinhos, min, max);
+
+            var filter = Builders<DadosSensor>.Filter.Eq("idSensor", id);
+
+            for (int j = 0; j < sensores.Count; j++)
+            {
+                if (classificacao[j] == "1")
+                {
+                    filter = Builders<DadosSensor>.Filter.Eq("data", sensores[j].data);
+
+                    var update = Builders<DadosSensor>.Update
+                        .Set("valor", listDados[j]);
+
+                    dbmongo.getColuna().UpdateOneAsync(filter, update);
+                }
+            }
+        }
+
+        public void Post(string idSensor, double valor)
+        {
+            dbmongo.criarConexaoDB();
+
+            if ((!string.IsNullOrEmpty(idSensor)) && (!string.IsNullOrEmpty(Convert.ToString(valor))))
             {
                 DadosSensor dados = new DadosSensor();
                 dados.idSensor = idSensor;
                 dados.valor = valor;
                 dados.data = DateTime.Now;
 
-                coll.InsertOne(dados);
+                dbmongo.getColuna().InsertOne(dados);
             }
         }
 
-        public void Put(string idSensor)
+        public void Put(string idSensor, double valor)
         {
-            var dbmongo = new MongoClient();
-            var db = dbmongo.GetDatabase("dadosSensor");
-            var coll = db.GetCollection<DadosSensor>("dadosSensor");
-
+            dbmongo.criarConexaoDB();
             var filter = Builders<DadosSensor>.Filter.Eq("idSensor", idSensor);
 
             var update = Builders<DadosSensor>.Update
-                .Set("valor", "15.2")
+                .Set("valor", valor)
                 .Set("data", DateTime.Now);
 
-            coll.UpdateOneAsync(filter, update);
+            dbmongo.getColuna().UpdateOneAsync(filter, update);
         }
 
     }

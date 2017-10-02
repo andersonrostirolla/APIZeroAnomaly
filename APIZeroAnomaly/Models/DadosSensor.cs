@@ -10,7 +10,7 @@ namespace APIZeroAnomaly.Models
     {
         public ObjectId _id { get; set; }
         public string idSensor { get; set; }
-        public string valor { get; set; }
+        public double valor { get; set; }
         public DateTime data { get; set; }
     }
 }

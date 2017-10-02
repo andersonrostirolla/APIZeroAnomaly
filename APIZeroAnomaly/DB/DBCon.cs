@@ -9,10 +9,20 @@ namespace APIZeroAnomaly.DB
 {
     public class DBCon
     {
+        private IMongoDatabase db;
+        protected IMongoCollection<DadosSensor> coll;
 
         public void criarConexaoDB()
         {
-            var client = new MongoClient();
+            MongoClient dbmongo = new MongoClient();
+            db = dbmongo.GetDatabase("dadosSensor");
+            coll = db.GetCollection<DadosSensor>("dadosSensor");
+        }
+
+        public IMongoCollection<DadosSensor> getColuna()
+        {
+            return coll;
         }
     }
+    
 }
