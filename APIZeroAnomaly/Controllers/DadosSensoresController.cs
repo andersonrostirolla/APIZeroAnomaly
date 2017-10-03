@@ -26,7 +26,6 @@ namespace APIZeroAnomaly.Controllers
             var sensores = dbmongo.getColuna()
                 .Find(b => b.idSensor == id)
                 .SortBy(b => b.idSensor)
-                .Limit(5)
                 .ToListAsync()
                 .Result;
 
@@ -56,7 +55,6 @@ namespace APIZeroAnomaly.Controllers
             var sensores = dbmongo.getColuna()
                 .Find(b => b.idSensor == id)
                 .SortBy(b => b.idSensor)
-                .Limit(5)
                 .ToListAsync()
                 .Result;
 

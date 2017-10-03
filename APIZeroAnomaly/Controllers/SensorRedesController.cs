@@ -23,7 +23,6 @@ namespace APIZeroAnomaly.Controllers
             var rede = dbmongo.getColunaRede()
                 .Find(b => b.idRede == id)
                 .SortBy(b => b.idSensor)
-                .Limit(5)
                 .ToListAsync()
                 .Result;
 
