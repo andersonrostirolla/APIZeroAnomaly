@@ -6,11 +6,11 @@ using System.Web;
 
 namespace APIZeroAnomaly.Models
 {
-    public class DadosSensor
+    public class SensorRede
     {
         public ObjectId _id { get; set; }
+        public int idRede { get; set; }
         public int idSensor { get; set; }
-        public double valor { get; set; }
         public DateTime data { get; set; }
     }
 }

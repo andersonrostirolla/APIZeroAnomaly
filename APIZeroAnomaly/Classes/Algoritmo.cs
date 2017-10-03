@@ -26,13 +26,77 @@ namespace APIZeroAnomaly.Classes
             return anomalia;
         }
 
-        public List<Double> trataAnomalia(List<Double> listDados, int vizinhos, double min, double max)
+        public List<Double> trataAnomalia(List<Double> listDados, int vizinhos, double min, double max, bool redeSensor)
         {
             List<String> classificacao = new List<String>();
             Vizinho vizinho = new Vizinho();
 
             vizinho.setVizinhos(vizinhos);
             vizinho.setMinMax(min, max);
+
+            if (redeSensor)
+            {
+                switch (vizinho.getVizinhos())
+                {
+                    case 1:
+                        vizinho.UmVizinhoRede(listDados);
+
+                        for (int i = 0; i < listDados.Count(); i++)
+                        {
+                            foreach (double row in listDados)
+                            {
+                                setClassificacao(row, vizinho.getMin(), vizinho.getMax());
+                                classificacao.Add(getClassificacao());
+                            }
+
+                            if (classificacao.Contains("1"))
+                            {
+                                vizinho.UmVizinhoRede(listDados);
+                                classificacao.Clear();
+                            }
+                        }
+                        break;
+                    case 2:
+                        vizinho.DoisVizinhosRede(listDados);
+
+                        for (int i = 0; i < listDados.Count(); i++)
+                        {
+                            foreach (double row in listDados)
+                            {
+                                setClassificacao(row, vizinho.getMin(), vizinho.getMax());
+                                classificacao.Add(getClassificacao());
+                            }
+
+                            if (classificacao.Contains("1"))
+                            {
+                                vizinho.DoisVizinhosRede(listDados);
+                                classificacao.Clear();
+                            }
+                        }
+                        break;
+                    case 3:
+                        vizinho.TresVizinhosRede(listDados);
+
+                        for (int i = 0; i < listDados.Count(); i++)
+                        {
+                            foreach (double row in listDados)
+                            {
+                                setClassificacao(row, vizinho.getMin(), vizinho.getMax());
+                                classificacao.Add(getClassificacao());
+                            }
+
+                            if (classificacao.Contains("1"))
+                            {
+                                vizinho.TresVizinhosRede(listDados);
+                                classificacao.Clear();
+                            }
+                        }
+                        break;
+                    default:
+                        return listDados;
+
+                }
+            }
 
             switch (vizinho.getVizinhos())
             {

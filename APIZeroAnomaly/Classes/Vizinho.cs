@@ -59,6 +59,13 @@ namespace APIZeroAnomaly.Classes
             return listDados;
         }
 
+        public List<Double> UmVizinhoRede(List<Double> listDados)
+        {
+            listDados[1] = listDados[0];
+            
+            return listDados;
+        }
+
         public List<Double> DoisVizinhos(List<Double> listDados)
         {
             cont = 0;
@@ -110,6 +117,13 @@ namespace APIZeroAnomaly.Classes
                     }
                 }
             }
+
+            return listDados;
+        }
+
+        public List<Double> DoisVizinhosRede(List<Double> listDados)
+        {
+            listDados[2] = ((listDados[1] + listDados[0]) / getVizinhos());
 
             return listDados;
         }
@@ -169,6 +183,13 @@ namespace APIZeroAnomaly.Classes
 
             return listDados;
 
+        }
+
+        public List<Double> TresVizinhosRede(List<Double> listDados)
+        {
+            listDados[3] = ((listDados[2] + listDados[1] + listDados[0]) / getVizinhos());
+
+            return listDados;
         }
 
         public void setVizinhos(int valor)
