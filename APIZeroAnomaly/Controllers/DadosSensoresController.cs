@@ -137,6 +137,7 @@ namespace APIZeroAnomaly.Controllers
             dbmongo.criarConexaoDB();
             Algoritmo alg = new Algoritmo();
             int cont = 0;
+            double valorOriginal = 0.0;
             //verifica se é anomalia
             alg.setClassificacao(valor, min, max);
             //caso for anomalia, trata imediatamente com valores dos outros sensores da mesma rede
@@ -179,6 +180,7 @@ namespace APIZeroAnomaly.Controllers
                             alg.setClassificacao(dados[dados.Count() - 1].valor, min, max);
                             if (alg.getClassificacao() == "0")
                             {
+                                valorOriginal = valor;
                                 valor = dados[dados.Count() - 1].valor;
                                 cont = 1;
                                 break;
@@ -196,6 +198,10 @@ namespace APIZeroAnomaly.Controllers
                 DadosSensor dados = new DadosSensor();
                 dados.idSensor = idSensor;
                 dados.valor = valor;
+                if (valorOriginal == 0.0)
+                    dados.valorOriginal = valor;
+                else
+                    dados.valorOriginal = valor;
                 dados.data = DateTime.Now;
 
                 dbmongo.getColuna().InsertOne(dados);
