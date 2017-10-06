@@ -9,9 +9,9 @@ namespace APIZeroAnomaly.Models
     public class DadosSensor
     {
         public ObjectId _id { get; set; }
-        public int idSensor { get; set; }
-        public double valor { get; set; }
-        public double valorOriginal { get; set; }
-        public DateTime data { get; set; }
+        public int IdSensor { get; set; }
+        public double Valor { get; set; }
+        public double ValorOriginal { get; set; }
+        public DateTime Data { get; set; }
     }
 }

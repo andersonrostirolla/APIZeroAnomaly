@@ -100,12 +100,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\Algoritmo.cs" />
     <Compile Include="Classes\Vizinho.cs" />
+    <Compile Include="Controllers\ConfigSensoresController.cs" />
     <Compile Include="Controllers\DadosSensoresController.cs" />
     <Compile Include="Controllers\SensorRedesController.cs" />
     <Compile Include="DB\DBCon.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConfigSensor.cs" />
     <Compile Include="Models\DadosSensor.cs" />
     <Compile Include="Models\SensorRede.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,15 +14,15 @@ namespace APIZeroAnomaly.Controllers
     {
         private DBCon dbmongo = new DBCon();
 
-        public List<SensorRede> getRede(int idRede)
+        public List<SensorRede> getRede(int IdRede)
         {
             dbmongo.criarConexaoDB();
 
-            var id = idRede;
+            var id = IdRede;
 
             var rede = dbmongo.getColunaRede()
-                .Find(b => b.idRede == id)
-                .SortBy(b => b.idSensor)
+                .Find(b => b.IdRede == id)
+                .SortBy(b => b.IdSensor)
                 .ToListAsync()
                 .Result;
 
@@ -38,30 +38,30 @@ namespace APIZeroAnomaly.Controllers
             return rede;
         }
 
-        public void Post(int idRede, int idSensor)
+        public void Post(int IdRede, int IdSensor)
         {
             dbmongo.criarConexaoDB();
 
-            if ((!string.IsNullOrEmpty(Convert.ToString(idRede))) && (!string.IsNullOrEmpty(Convert.ToString(idSensor))))
+            if ((!string.IsNullOrEmpty(Convert.ToString(IdRede))) && (!string.IsNullOrEmpty(Convert.ToString(IdSensor))))
             {
                 SensorRede rede = new SensorRede();
-                rede.idRede = idRede;
-                rede.idSensor = idSensor;
-                rede.data = DateTime.Now;
+                rede.IdRede = IdRede;
+                rede.IdSensor = IdSensor;
+                rede.Data = DateTime.Now;
 
                 dbmongo.getColunaRede().InsertOne(rede);
             }
         }
 
-        public void Put(int idRede, int idSensor)
+        public void Put(int IdRede, int IdSensor)
         {
             dbmongo.criarConexaoDB();
 
-            var filter = Builders<SensorRede>.Filter.Eq("idRede", idRede);
+            var filter = Builders<SensorRede>.Filter.Eq("IdRede", IdRede);
 
             var update = Builders<SensorRede>.Update
-                .Set("idSensor", idSensor)
-                .Set("data", DateTime.Now);
+                .Set("IdSensor", IdSensor)
+                .Set("Data", DateTime.Now);
 
             dbmongo.getColunaRede().UpdateOneAsync(filter, update);
         }

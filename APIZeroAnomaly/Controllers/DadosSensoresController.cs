@@ -17,15 +17,15 @@ namespace APIZeroAnomaly.Controllers
     {
         private DBCon dbmongo = new DBCon();
 
-        public List<DadosSensor> listarDados(int idSensor)
+        public List<DadosSensor> listarDados(int IdSensor)
         {
             dbmongo.criarConexaoDB();
 
-            var id = idSensor;
+            var id = IdSensor;
 
             var sensores = dbmongo.getColuna()
-                .Find(b => b.idSensor == id)
-                .SortBy(b => b.idSensor)
+                .Find(b => b.IdSensor == id)
+                .SortBy(b => b.IdSensor)
                 .ToListAsync()
                 .Result;
 
@@ -42,89 +42,104 @@ namespace APIZeroAnomaly.Controllers
             return sensores;
         }
 
-        public void tratarAnomalia(int vizinhos, double min, double max, int idSensor)
+        public void tratarAnomalia(int Vizinhos, int IdSensor)
         {
             List<Double> listDados = new List<Double>();
             Algoritmo alg = new Algoritmo();
             List<String> classificacao = new List<String>(); 
             
-            var id = idSensor;
+            var id = IdSensor;
 
             dbmongo.criarConexaoDB();
 
             var sensores = dbmongo.getColuna()
-                .Find(b => b.idSensor == id)
-                .SortBy(b => b.idSensor)
+                .Find(b => b.IdSensor == id)
+                .SortBy(b => b.IdSensor)
+                .ToListAsync()
+                .Result;
+
+            //consultar os valores definidos de min e max para o sensor passado
+            var configSensor = dbmongo.getColunaConfigSensor()
+                .Find(b => b.IdSensor == id)
+                .SortBy(b => b.IdSensor)
                 .ToListAsync()
                 .Result;
 
             for (int i = 0; i < sensores.Count; i++)
             {
-                listDados.Add(sensores[i].valor);
-                alg.setClassificacao(sensores[i].valor, min, max);
+                listDados.Add(sensores[i].Valor);
+                alg.setClassificacao(sensores[i].Valor, configSensor[0].Min, configSensor[0].Max);
                 classificacao.Add(alg.getClassificacao());
             }
 
-            alg.trataAnomalia(listDados,vizinhos, min, max, false);
+            alg.trataAnomalia(listDados,Vizinhos, configSensor[0].Min, configSensor[0].Max, false);
 
-            var filter = Builders<DadosSensor>.Filter.Eq("idSensor", id);
+            var filter = Builders<DadosSensor>.Filter.Eq("IdSensor", id);
 
             for (int j = 0; j < sensores.Count; j++)
             {
                 if (classificacao[j] == "1")
                 {
-                    filter = Builders<DadosSensor>.Filter.Eq("data", sensores[j].data);
+                    filter = Builders<DadosSensor>.Filter.Eq("Data", sensores[j].Data);
 
                     var update = Builders<DadosSensor>.Update
-                        .Set("valor", listDados[j]);
+                        .Set("Valor", listDados[j]);
 
                     dbmongo.getColuna().UpdateOneAsync(filter, update);
                 }
             }
         }
 
-        public void tratarAnomaliaRede(int vizinhos, double min, double max, int idSensor, bool redeSensor)
+        public void tratarAnomaliaRede(int Vizinhos, int IdSensor, bool TrataTempoReal)
         {
             List<Double> listDados = new List<Double>();
             Algoritmo alg = new Algoritmo();
             List<String> classificacao = new List<String>();
 
-            var id = idSensor;
+            var id = IdSensor;
 
             dbmongo.criarConexaoDB();
+
             //pegando os ultimos vizinhos[pode ser 3,2 ou 1] valores
             var sensores = dbmongo.getColuna()
-                .Find(b => b.idSensor == id)
-                .SortBy(b => b.idSensor)
+                .Find(b => b.IdSensor == id)
+                .SortBy(b => b.IdSensor)
                 .ToListAsync()
                 .Result;
 
             var sensorDados = dbmongo.getColuna()
-                .Find(b => b.idSensor == id)
-                .Limit(vizinhos+1)
-                .Skip(sensores.Count()-(vizinhos+1))
+                .Find(b => b.IdSensor == id)
+                .Limit(Vizinhos+1)
+                .Skip(sensores.Count()-(Vizinhos+1))
+                .ToListAsync()
+                .Result;
+
+            //consultar os valores definidos de min e max para o sensor passado
+            var configSensor = dbmongo.getColunaConfigSensor()
+                .Find(b => b.IdSensor == id)
+                .SortBy(b => b.IdSensor)
                 .ToListAsync()
                 .Result;
 
             for (int i = 0; i < sensorDados.Count; i++)
             {
-                listDados.Add(sensorDados[i].valor);
-                alg.setClassificacao(sensorDados[i].valor, min, max);
+                listDados.Add(sensorDados[i].Valor);
+                alg.setClassificacao(sensorDados[i].Valor, configSensor[0].Min, configSensor[0].Max);
                 classificacao.Add(alg.getClassificacao());
             }
 
-            alg.trataAnomalia(listDados, vizinhos, min, max, redeSensor);
+            alg.trataAnomalia(listDados, Vizinhos, configSensor[0].Min, configSensor[0].Max, TrataTempoReal);
 
-            var filter = Builders<DadosSensor>.Filter.Eq("idSensor", id);
+            var filter = Builders<DadosSensor>.Filter.Eq("IdSensor", id);
 
             for (int j = 0; j < sensorDados.Count; j++)
             {
                 if (classificacao[j] == "1")
                 {
-                    filter = Builders<DadosSensor>.Filter.Eq("data", sensorDados[j].data);
+                    filter = Builders<DadosSensor>.Filter.Eq("Data", sensorDados[j].Data);
 
                     var update = Builders<DadosSensor>.Update
-                        .Set("valor", listDados[j]);
+                        .Set("Valor", listDados[j]);
 
                     dbmongo.getColuna().UpdateOneAsync(filter, update);
                 }
@@ -132,7 +147,7 @@ namespace APIZeroAnomaly.Controllers
         }
 
         //se redeSensor for true, então procurar nos sensores da rede se existe algum valor sem anomalia.
-        public void Post(int idSensor, double valor, double min, double max, bool redeSensor, int vizinhos)
+        public void Post(int IdSensor, double Valor, bool TrataTempoReal, int VizinhosPadrao)
         {
             dbmongo.criarConexaoDB();
             Algoritmo alg = new Algoritmo();

@@ -9,8 +9,8 @@ namespace APIZeroAnomaly.Models
     public class SensorRede
     {
         public ObjectId _id { get; set; }
-        public int idRede { get; set; }
-        public int idSensor { get; set; }
-        public DateTime data { get; set; }
+        public int IdRede { get; set; }
+        public int IdSensor { get; set; }
+        public DateTime Data { get; set; }
     }
 }
