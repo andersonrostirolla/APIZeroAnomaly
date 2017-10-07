@@ -5,7 +5,7 @@ using System.Web;
 
 namespace APIZeroAnomaly.Classes
 {
-    public class Algoritmo
+    public class TrataAnomalia
     {
         public string anomalia;
 

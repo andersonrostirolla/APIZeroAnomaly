@@ -9,33 +9,33 @@ namespace APIZeroAnomaly.DB
 {
     public class DBCon
     {
-        private IMongoDatabase db;
-        protected IMongoCollection<DadosSensor> coll;
-        protected IMongoCollection<SensorRede> collRede;
-        protected IMongoCollection<ConfigSensor> collConfigSensor;
+        private IMongoDatabase DB;
+        protected IMongoCollection<DadosSensor> CollDados;
+        protected IMongoCollection<SensorRede> CollRede;
+        protected IMongoCollection<ConfigSensor> CollConfigSensor;
 
         public void criarConexaoDB()
         {
             MongoClient dbmongo = new MongoClient();
-            db = dbmongo.GetDatabase("dadosSensor");
-            coll = db.GetCollection<DadosSensor>("dadosSensor");
-            collRede = db.GetCollection<SensorRede>("sensorRede");
-            collConfigSensor = db.GetCollection<ConfigSensor>("configSensor");
+            DB = dbmongo.GetDatabase("dados");
+            CollDados = DB.GetCollection<DadosSensor>("dadosSensor");
+            CollRede = DB.GetCollection<SensorRede>("sensorRede");
+            CollConfigSensor = DB.GetCollection<ConfigSensor>("configSensor");
         }
 
-        public IMongoCollection<DadosSensor> getColuna()
+        public IMongoCollection<DadosSensor> getColunaDados()
         {
-            return coll;
+            return CollDados;
         }
 
         public IMongoCollection<SensorRede> getColunaRede()
         {
-            return collRede;
+            return CollRede;
         }
 
         public IMongoCollection<ConfigSensor> getColunaConfigSensor()
         {
-            return collConfigSensor;
+            return CollConfigSensor;
         }
     }
     

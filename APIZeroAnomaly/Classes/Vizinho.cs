@@ -7,215 +7,215 @@ namespace APIZeroAnomaly.Classes
 {
     public class Vizinho
     {
-        public int vizinhos;
-        private int cont = 0;
-        private double max, min;
+        public int Vizinhos;
+        private int Cont = 0;
+        private double Max, Min;
 
-        public List<Double> UmVizinho(List<Double> listDados)
+        public List<Double> UmVizinho(List<Double> ListDados)
         {
-            cont = 0;
+            Cont = 0;
 
-            for (int i = 0; i <= listDados.Count() - getVizinhos(); i++)
+            for (int i = 0; i <= ListDados.Count() - getVizinhos(); i++)
             {
-                if (i >= (listDados.Count() - getVizinhos()))
+                if (i >= (ListDados.Count() - getVizinhos()))
                 {
-                    for (int j = i; j < listDados.Count(); j++)
+                    for (int j = i; j < ListDados.Count(); j++)
                     {
-                        cont = listDados.Count() - j;
+                        Cont = ListDados.Count() - j;
 
-                        if ((listDados[j] >= getMin()) && (listDados[j] <= getMax()))
-                            listDados[j] = listDados[j];
+                        if ((ListDados[j] >= getMin()) && (ListDados[j] <= getMax()))
+                            ListDados[j] = ListDados[j];
                         else
                         {
-                            if (j == listDados.Count() - cont && listDados.Count() >= 1)
-                                listDados[j] = listDados[j - 1];
+                            if (j == ListDados.Count() - Cont && ListDados.Count() >= 1)
+                                ListDados[j] = ListDados[j - 1];
                         }
                     }
                 }
                 else if (i >= getVizinhos())
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
-                        listDados[i] = ((listDados[i + 1] + listDados[i - 1]) / (getVizinhos() * 2));
+                        ListDados[i] = ((ListDados[i + 1] + ListDados[i - 1]) / (getVizinhos() * 2));
                 }
                 else
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
                     {
-                        if (listDados.Count() > 2)
+                        if (ListDados.Count() > 2)
                         {
-                            if (listDados[i + 1] >= getMin())
-                                listDados[i] = listDados[i + 1];
+                            if (ListDados[i + 1] >= getMin())
+                                ListDados[i] = ListDados[i + 1];
                             else
-                                listDados[i] = getMin();
+                                ListDados[i] = getMin();
                         }
                     }
                 }
             }
 
-            return listDados;
+            return ListDados;
         }
 
-        public List<Double> UmVizinhoRede(List<Double> listDados)
+        public List<Double> UmVizinhoRede(List<Double> ListDados)
         {
-            listDados[1] = listDados[0];
+            ListDados[1] = ListDados[0];
             
-            return listDados;
+            return ListDados;
         }
 
-        public List<Double> DoisVizinhos(List<Double> listDados)
+        public List<Double> DoisVizinhos(List<Double> ListDados)
         {
-            cont = 0;
+            Cont = 0;
 
-            for (int i = 0; i <= listDados.Count() - getVizinhos(); i++)
+            for (int i = 0; i <= ListDados.Count() - getVizinhos(); i++)
             {
-                if (i >= (listDados.Count() - getVizinhos()))
+                if (i >= (ListDados.Count() - getVizinhos()))
                 {
-                    for (int j = i; j < listDados.Count(); j++)
+                    for (int j = i; j < ListDados.Count(); j++)
                     {
-                        cont = listDados.Count() - j;
+                        Cont = ListDados.Count() - j;
 
-                        if ((listDados[j] >= getMin()) && (listDados[j] <= getMax()))
-                            listDados[j] = listDados[j];
+                        if ((ListDados[j] >= getMin()) && (ListDados[j] <= getMax()))
+                            ListDados[j] = ListDados[j];
                         else
                         {
-                            if (j == listDados.Count() - cont && listDados.Count() >= 2)
+                            if (j == ListDados.Count() - Cont && ListDados.Count() >= 2)
                             {
-                                if (j < listDados.Count() - 1)
-                                    listDados[j] = ((listDados[j - 1] + listDados[j - 2] + listDados[j + 1]) / ((getVizinhos() * 2) - 1));
+                                if (j < ListDados.Count() - 1)
+                                    ListDados[j] = ((ListDados[j - 1] + ListDados[j - 2] + ListDados[j + 1]) / ((getVizinhos() * 2) - 1));
                                 else
-                                    listDados[j] = ((listDados[j - 1] + listDados[j - 2]) / getVizinhos());
+                                    ListDados[j] = ((ListDados[j - 1] + ListDados[j - 2]) / getVizinhos());
                             }
                         }
                     }
                 }
                 else if (i >= getVizinhos())
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
-                        listDados[i] = ((listDados[i - 2] + listDados[i - 1] + listDados[i + 1] + listDados[i + 2]) / (getVizinhos() * 2));
+                        ListDados[i] = ((ListDados[i - 2] + ListDados[i - 1] + ListDados[i + 1] + ListDados[i + 2]) / (getVizinhos() * 2));
                 }
                 else
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
                     {
-                        if (listDados.Count() > 4)
+                        if (ListDados.Count() > 4)
                         {
                             if (i == 0)
-                                listDados[i] = ((listDados[i + 1] + listDados[i + 2]) / getVizinhos());
+                                ListDados[i] = ((ListDados[i + 1] + ListDados[i + 2]) / getVizinhos());
                             else if (i == 1)
-                                listDados[i] = ((listDados[i + 1] + listDados[i + 2] + listDados[i - 1]) / ((getVizinhos() * 2) - 1));
+                                ListDados[i] = ((ListDados[i + 1] + ListDados[i + 2] + ListDados[i - 1]) / ((getVizinhos() * 2) - 1));
                             else
-                                listDados[i] = getMin();
+                                ListDados[i] = getMin();
                         }
                     }
                 }
             }
 
-            return listDados;
+            return ListDados;
         }
 
-        public List<Double> DoisVizinhosRede(List<Double> listDados)
+        public List<Double> DoisVizinhosRede(List<Double> ListDados)
         {
-            listDados[2] = ((listDados[1] + listDados[0]) / getVizinhos());
+            ListDados[2] = ((ListDados[1] + ListDados[0]) / getVizinhos());
 
-            return listDados;
+            return ListDados;
         }
 
-        public List<Double> TresVizinhos(List<Double> listDados)
+        public List<Double> TresVizinhos(List<Double> ListDados)
         {
-            for (int i = 0; i <= listDados.Count() - getVizinhos(); i++)
+            for (int i = 0; i <= ListDados.Count() - getVizinhos(); i++)
             {
-                if (i >= (listDados.Count() - getVizinhos()))
+                if (i >= (ListDados.Count() - getVizinhos()))
                 {
-                    for (int j = i; j < listDados.Count(); j++)
+                    for (int j = i; j < ListDados.Count(); j++)
                     {
-                        cont = listDados.Count() - j;
-                        if ((listDados[j] >= getMin()) && (listDados[j] <= getMax()))
-                            listDados[j] = listDados[j];
+                        Cont = ListDados.Count() - j;
+                        if ((ListDados[j] >= getMin()) && (ListDados[j] <= getMax()))
+                            ListDados[j] = ListDados[j];
                         else
                         {
-                            if (j == listDados.Count() - cont && listDados.Count() >= 3)
+                            if (j == ListDados.Count() - Cont && ListDados.Count() >= 3)
                             {
-                                if (j < listDados.Count() - 2)
-                                    listDados[j] = ((listDados[j - 1] + listDados[j - 2] + listDados[j - 3] + listDados[j + 2] + listDados[j + 1]) / ((getVizinhos() * 2) - 1));
-                                else if (j < listDados.Count() - 1)
-                                    listDados[j] = ((listDados[j - 1] + listDados[j - 2] + listDados[j - 3] + listDados[j + 1]) / ((getVizinhos() * 2) - 2));
+                                if (j < ListDados.Count() - 2)
+                                    ListDados[j] = ((ListDados[j - 1] + ListDados[j - 2] + ListDados[j - 3] + ListDados[j + 2] + ListDados[j + 1]) / ((getVizinhos() * 2) - 1));
+                                else if (j < ListDados.Count() - 1)
+                                    ListDados[j] = ((ListDados[j - 1] + ListDados[j - 2] + ListDados[j - 3] + ListDados[j + 1]) / ((getVizinhos() * 2) - 2));
                                 else
-                                    listDados[j] = ((listDados[j - 1] + listDados[j - 2] + listDados[j - 3]) / getVizinhos());
+                                    ListDados[j] = ((ListDados[j - 1] + ListDados[j - 2] + ListDados[j - 3]) / getVizinhos());
                             }
                         }
                     }
                 }
                 else if (i >= getVizinhos())
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
-                        listDados[i] = ((listDados[i - 3] + listDados[i - 2] + listDados[i - 1] + listDados[i + 1] + listDados[i + 2] + listDados[i + 3]) / (getVizinhos() * 2));
+                        ListDados[i] = ((ListDados[i - 3] + ListDados[i - 2] + ListDados[i - 1] + ListDados[i + 1] + ListDados[i + 2] + ListDados[i + 3]) / (getVizinhos() * 2));
                 }
                 else
                 {
-                    if ((listDados[i] >= getMin()) && (listDados[i] <= getMax()))
-                        listDados[i] = listDados[i];
+                    if ((ListDados[i] >= getMin()) && (ListDados[i] <= getMax()))
+                        ListDados[i] = ListDados[i];
                     else
                     {
-                        if (listDados.Count() > 6)
+                        if (ListDados.Count() > 6)
                         {
                             if (i == 0)
-                                listDados[i] = ((listDados[i + 1] + listDados[i + 2] + listDados[i + 3]) / getVizinhos());
+                                ListDados[i] = ((ListDados[i + 1] + ListDados[i + 2] + ListDados[i + 3]) / getVizinhos());
                             else if (i == 1)
-                                listDados[i] = ((listDados[i + 1] + listDados[i + 2] + listDados[i + 3] + listDados[i - 1]) / ((getVizinhos() * 2) - 2));
+                                ListDados[i] = ((ListDados[i + 1] + ListDados[i + 2] + ListDados[i + 3] + ListDados[i - 1]) / ((getVizinhos() * 2) - 2));
                             else if (i == 2)
-                                listDados[i] = ((listDados[i + 1] + listDados[i + 2] + listDados[i + 3] + listDados[i - 1] + listDados[i - 2]) / ((getVizinhos() * 2) - 1));
+                                ListDados[i] = ((ListDados[i + 1] + ListDados[i + 2] + ListDados[i + 3] + ListDados[i - 1] + ListDados[i - 2]) / ((getVizinhos() * 2) - 1));
                             else
-                                listDados[i] = getMin();
+                                ListDados[i] = getMin();
                         }
                     }
                 }
             }
 
-            return listDados;
+            return ListDados;
 
         }
 
-        public List<Double> TresVizinhosRede(List<Double> listDados)
+        public List<Double> TresVizinhosRede(List<Double> ListDados)
         {
-            listDados[3] = ((listDados[2] + listDados[1] + listDados[0]) / getVizinhos());
+            ListDados[3] = ((ListDados[2] + ListDados[1] + ListDados[0]) / getVizinhos());
 
-            return listDados;
+            return ListDados;
         }
 
         public void setVizinhos(int valor)
         {
-            this.vizinhos = valor;
+            this.Vizinhos = valor;
         }
 
         public int getVizinhos()
         {
-            return this.vizinhos;
+            return this.Vizinhos;
         }
 
-        public void setMinMax(double min, double max)
+        public void setMinMax(double Min, double Max)
         {
-            this.min = min;
-            this.max = max;
+            this.Min = Min;
+            this.Max = Max;
         }
 
         public double getMax()
         {
-            return this.max;
+            return this.Max;
         }
 
         public double getMin()
         {
-            return this.min;
+            return this.Min;
         }
     }
 }

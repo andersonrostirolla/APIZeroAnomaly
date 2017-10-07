@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace APIZeroAnomaly.Controllers
 {
@@ -14,22 +15,8 @@ namespace APIZeroAnomaly.Controllers
     {
         private DBCon dbmongo = new DBCon();
 
-        public List<ConfigSensor> getConfig(int IdSensor)
-        {
-            dbmongo.criarConexaoDB();
-
-            var id = IdSensor;
-
-            var config = dbmongo.getColunaConfigSensor()
-                .Find(b => b.IdSensor == id)
-                .SortBy(b => b.IdSensor)
-                .ToListAsync()
-                .Result;
-
-            return config;
-        }
-
-        public List<ConfigSensor> Get()
+        //Tras todos
+        public List<ConfigSensor> GetAllConfigSensores()
         {
             dbmongo.criarConexaoDB();
 
@@ -38,23 +25,62 @@ namespace APIZeroAnomaly.Controllers
             return config;
         }
 
-        public void Post(int IdSensor, string Descricao, double Min, double Max, string UnidadeMedida, string Metodo)
+        [ResponseType(typeof(ConfigSensor))]
+        public IHttpActionResult GetConfigSensor(int Id)
+        {
+            dbmongo.criarConexaoDB();
+
+            var config = dbmongo.getColunaConfigSensor()
+                .Find(b => b.IdSensor == Id)
+                .SortBy(b => b.IdSensor)
+                .ToListAsync()
+                .Result;
+
+            if (config == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(config);
+            }
+        }
+
+        public void Post(int IdSensor, string Descricao, double Min, double Max, string UnidadeMedida, string Metodo, int VizinhosPadrao)
         {
             dbmongo.criarConexaoDB();
 
             if ((!string.IsNullOrEmpty(Convert.ToString(IdSensor))) && (!string.IsNullOrEmpty(Convert.ToString(IdSensor))))
             {
-                ConfigSensor config = new ConfigSensor();
-                config.IdSensor = IdSensor;
-                config.Descricao = Descricao;
-                config.Min = Min;
-                config.Max = Max;
-                config.UnidadeMedida = UnidadeMedida;
-                config.Metodo = Metodo;
-                config.Data = DateTime.Now;
+                //verificar se já não existe um sensor com o numero apontado para um novo cadastro
+                var sensor = dbmongo.getColunaConfigSensor()
+                    .Find(b => b.IdSensor == IdSensor)
+                    .ToListAsync()
+                    .Result;
 
-                dbmongo.getColunaConfigSensor().InsertOne(config);
+                if (sensor.Count == 0)
+                {
+                    ConfigSensor config = new ConfigSensor();
+                    config.IdSensor = IdSensor;
+                    config.Descricao = Descricao;
+                    config.Min = Min;
+                    config.Max = Max;
+                    config.UnidadeMedida = UnidadeMedida;
+                    config.Metodo = Metodo;
+                    config.VizinhosPadrao = VizinhosPadrao;
+                    config.Data = DateTime.Now;
+
+                    dbmongo.getColunaConfigSensor().InsertOne(config);
+                }
             }
+        }
+
+        public void Delete(int IdSensor)
+        {
+            dbmongo.criarConexaoDB();
+
+            var filter = Builders<ConfigSensor>.Filter.Eq("IdSensor", IdSensor);
+
+            dbmongo.getColunaConfigSensor().DeleteOne(filter);
         }
 
         public void Put(int IdSensor, double Min, double Max, string Metodo)

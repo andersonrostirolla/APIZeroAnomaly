@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Classes\Algoritmo.cs" />
+    <Compile Include="Classes\TrataAnomalia.cs" />
     <Compile Include="Classes\Vizinho.cs" />
     <Compile Include="Controllers\ConfigSensoresController.cs" />
     <Compile Include="Controllers\DadosSensoresController.cs" />

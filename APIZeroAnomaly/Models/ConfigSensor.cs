@@ -15,7 +15,7 @@ namespace APIZeroAnomaly.Models
         public double Max { get; set; }
         public string UnidadeMedida { get; set; }
         public string Metodo { get; set; }
-        public string VizinhosPadrao { get; set; }
+        public int VizinhosPadrao { get; set; }
         public DateTime Data { get; set; }
     }
 }
