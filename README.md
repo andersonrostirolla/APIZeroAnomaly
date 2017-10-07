@@ -27,7 +27,6 @@ Após isto, seguir os passos de:
  - Inserir dados para os sensores (No mínimo  10 dados para cada sensor que queira fazer tratamento correto).
 
 ## Expondo modelo da coleção no banco de dados MongoDB
-* **Billie Thompson** - *Initial work* -
 * **configSensor** (
  - _id ObjectId,			  - Identificador do banco
  - IdSensor int,			  - Identificador do sensor
