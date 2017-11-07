@@ -42,7 +42,7 @@ Após isto, seguir os passos de:
  - _id ObjectId,			  - Identificador do banco
  - IdSensor int,			  - Identificador do sensor
  - Valor double,			  - Dado enviado pelo sensor
- - ValorOriginal,			  - Dado enviado pelo sensor sem tratamento
+ - ValorOriginal double,			  - Dado enviado pelo sensor sem tratamento
  - Data ISODate);			  - Data para histórico
  	
 * **sensorData** (
