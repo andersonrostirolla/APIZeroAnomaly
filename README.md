@@ -60,3 +60,13 @@ Para testar utilize uma interface que se comunique com a API ou utilize o Postma
  - [Rota para rede de sensores](https://documenter.getpostman.com/view/958522/configuracao-redes/716canQ);
 
  - [Rota para os dados](https://documenter.getpostman.com/view/958522/dados/716canP);
+ 
+ Para realizar a geração de graficos como resultados da Web API você pode utilizar ferramentas como Excel, ou via programação realizar a comunicação com a base de dados criada anteriormente no MongoDB e consultar os atributos:
+ 
+ - Data;
+ 
+ - Valor;
+ 
+ - ValorOriginal;
+
+Fazendo isto, em cada sensor de sua rede você terá os resultados pois relacionará o valor atual (Tratado) e o ValorOriginal que foi inserido no inicio.
